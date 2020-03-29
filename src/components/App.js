@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/App.css';
 import ListAppointments from './ListAppointments';
 import AddApointments from './AddApointments';
 import SearchAppointments from './SearchAppointments';
 
 function App() {
+  const [myAppointments, setMyAppointments] = useState([])
+  const [lastIndex, setLastIndex] = useState(0)
+  const fetchData = () => {
+    fetch('./data.json')
+      .then(response => response.json())
+      .then(result => {
+        const apts = result.map(item => {
+          item.aptId = lastIndex
+          setLastIndex(lastIndex + 1)
+          return item
+        })
+        setMyAppointments(apts)
+      })
+  }
+  useEffect(() => {
+    fetchData()
+  }, [])
   return (
     <main className="page bg-white" id="petratings">
       <div className="container">
@@ -13,7 +30,7 @@ function App() {
             <div className="container">
               <AddApointments />
               <SearchAppointments />
-              <ListAppointments />
+              <ListAppointments myAppointments={myAppointments} />
             </div>
           </div>
         </div>
