@@ -3,7 +3,7 @@ import '../css/App.css';
 import ListAppointments from './ListAppointments';
 import AddApointments from './AddApointments';
 import SearchAppointments from './SearchAppointments';
-import { without , findIndex} from "lodash"
+import { without, findIndex } from "lodash"
 
 function App() {
   let [myAppointments, setMyAppointments] = useState([])
@@ -31,13 +31,19 @@ function App() {
     tempApts = without(tempApts, apt)
     setMyAppointments(tempApts)
   }
+  const toggleForm = () => {
+    setFormDisplay(!formDisplay)
+  }
   return (
     <main className="page bg-white" id="petratings">
       <div className="container">
         <div className="row">
           <div className="col-md-12 bg-white">
             <div className="container">
-              <AddApointments formDisplay={formDisplay}/>
+              <AddApointments
+                formDisplay={formDisplay}
+                toggleForm={toggleForm}
+              />
               <SearchAppointments />
               <ListAppointments
                 myAppointments={myAppointments}

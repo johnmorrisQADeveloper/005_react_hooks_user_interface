@@ -1,14 +1,17 @@
 import React from 'react'
+import {FaPlus} from "react-icons/fa"
 
-const AddApointments = ({ formDisplay }) => {
+const AddApointments = ({ formDisplay, toggleForm }) => {
   return (
     <div className={
       'card textcenter mt-3 ' +
       (formDisplay ? '' : 'add-appointment')
     }
     >
-      <div className="apt-addheading card-header bg-primary text-white">
-        Add Appointment
+      <div className="apt-addheading card-header bg-primary text-white"
+        onClick={toggleForm}
+      >
+        <FaPlus />  Add Appointment
     </div>
 
       <div className="card-body">
