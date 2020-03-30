@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FaPlus } from "react-icons/fa"
 
-const AddApointments = ({ formDisplay, toggleForm, AddApointment }) => {
+const AddApointments = ({ formDisplay, toggleForm, AddAppointments }) => {
   // Example: useState with an object (multiple values, sorta)
   // https://daveceddia.com/usestate-hook-examples/
   const [form, setState] = useState({
@@ -20,7 +20,7 @@ const AddApointments = ({ formDisplay, toggleForm, AddApointment }) => {
       aptDate: form.aptDate + ' ' + form.aptTime,
       aptNotes: form.aptNotes
     }
-    AddApointment(tempApt)
+    AddAppointments(tempApt)
     setState({
       petName: '',
       ownerName: '',

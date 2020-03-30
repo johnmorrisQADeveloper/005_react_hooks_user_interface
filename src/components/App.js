@@ -1,142 +1,136 @@
-import React, { useState, useEffect } from 'react';
 import '../css/App.css';
 import ListAppointments from './ListAppointments';
-import AddApointments from './AddApointments';
+import AddAppointments from './AddApointments';
 import SearchAppointments from './SearchAppointments';
-import { without } from "lodash"
+import React, { Component } from 'react'
+import { without , findIndex} from "lodash"
 
-function App() {
-  const [queryTexts, setQueryTexts] = useState('')
-  const [app, setApp] = useState({
+export default class App extends Component {
+  state = {
     myAppointments: [],
-    lastIndex: 0,
     formDisplay: false,
-    queryText: '',
     orderBy: 'petName',
-    orderDir: 'asc'
-  })
-
-  const fetchData = () => {
+    orderDir: 'asc',
+    queryText: '',
+    lastIndex: 0
+  }
+  componentDidMount() {
     fetch('./data.json')
       .then(response => response.json())
       .then(result => {
         const apts = result.map(item => {
-          item.aptId = app.lastIndex
-          setApp({
-            ...app,
-            'lastIndex': app.lastIndex = app.lastIndex + 1
-          })
+          item.aptId = this.state.lastIndex
+          this.setState({ lastIndex: this.state.lastIndex + 1 })
           return item
         })
-        setApp({
-          ...app,
-          'myAppointments': apts
+        this.setState({
+          myAppointments: apts
         })
       })
   }
-  useEffect(() => {
-    fetchData()
-  }, [])
 
-  useEffect(() => {
+  updateInfo = (name, value, id) => {
+    let tempApts = this.state.myAppointments
+    let aptIndex = findIndex(this.state.myAppointments, {
+      aptId: id
+    })
+    tempApts[aptIndex][name]=value
+    this.setState({
+      myAppointments: tempApts
+    })
+  }
+
+  searchApts = (query) => {
+    this.setState({
+      queryText: query
+    })
+  }
+
+  changeOrder = (order, dir) => {
+    this.setState({
+      orderBy: order,
+      orderDir: dir
+    })
+  }
+
+  deleteAppointment = (apt) => {
+    let tempApts = this.state.myAppointments
+    tempApts = without(tempApts, apt)
+    this.setState({
+      myAppointments: tempApts
+    })
+  }
+
+  toggleForm = () => {
+    this.setState({
+      formDisplay: !this.state.formDisplay
+    })
+  }
+
+  AddAppointments = (apt) => {
+    let tempApts = this.state.myAppointments
+    apt.aptId = this.state.lastIndex
+
+    // this.state.lastIndex++
+    this.setState({
+      'lastIndex': this.state.lastIndex + 1
+    })
+    tempApts.unshift(apt)
+    this.setState({
+      myAppointments: tempApts
+    })
+  }
+
+  render() {
     let order
-    let fiteredApts = app.myAppointments
-    if (app.orderDir === 'asc') {
+    let filteredApts = this.state.myAppointments
+    if (this.state.orderDir === 'asc') {
       order = 1
     } else {
       order = -1
     }
-    fiteredApts = fiteredApts.sort((a, b) => {
-      if (a[app.orderBy].toLowerCase() < b[app.orderBy].toLowerCase()) {
+    filteredApts = filteredApts.sort((a, b) => {
+      if (a[this.state.orderBy].toLowerCase() <
+        b[this.state.orderBy].toLowerCase()
+      ) {
         return -1 * order
       } else {
         return 1 * order
       }
     }).filter(eachItem => {
       return (
-        eachItem['petName'].toLowerCase().includes(app.queryText.toLowerCase()) ||
-        eachItem['ownerName'].toLowerCase().includes(app.queryText.toLowerCase()) ||
-        eachItem['aptNotes'].toLowerCase().includes(app.queryText.toLowerCase())
+        eachItem['petName'].toLowerCase().includes(this.state.queryText.toLowerCase()) ||
+        eachItem['ownerName'].toLowerCase().includes(this.state.queryText.toLowerCase()) ||
+        eachItem['aptNotes'].toLowerCase().includes(this.state.queryText.toLowerCase())
       )
     })
-    setApp({
-      ...app,
-      'myAppointments': fiteredApts
-    })
-    fiteredApts = []
-  }, [app.orderBy, app.orderDir, queryTexts])
-
-  const searchApts = (search) => {
-    setApp({
-      ...app,
-      'queryText': search
-    })
-    setQueryTexts(app.queryText)
-  }
-  const changeOrder = (orderBy, orderDir) => {
-    console.log(orderBy, orderDir)
-    setApp({
-      ...app,
-      'orderBy': orderBy,
-      'orderDir': orderDir
-    })
-  }
-  const deleteAppointment = (apt) => {
-    let tempApts = app.myAppointments
-    tempApts = without(tempApts, apt)
-    setApp({
-      ...app,
-      'myAppointments': tempApts
-    })
-  }
-  const toggleForm = () => {
-    setApp({
-      ...app,
-      'formDisplay': !app.formDisplay
-    })
-  }
-  const AddApointment = (apt) => {
-    console.log(apt)
-    let tempApts = app.myAppointments
-    apt.aptId = app.lastIndex
-    setApp({
-      ...app,
-      'lastIndex': prevState => prevState + 1
-    })
-    tempApts.unshift(apt)
-    setApp({
-      ...app,
-      'myAppointments': tempApts
-    })
-  }
-  return (
-
-    <main className="page bg-white" id="petratings">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-12 bg-white">
-            <div className="container">
-              <AddApointments
-                formDisplay={app.formDisplay}
-                toggleForm={toggleForm}
-                AddApointment={AddApointment}
-              />
-              <SearchAppointments
-                orderBy={app.orderBy}
-                orderDir={app.orderDir}
-                changeOrder={changeOrder}
-                searchApts={searchApts}
-              />
-              <ListAppointments
-                myAppointments={app.myAppointments}
-                deleteAppointment={deleteAppointment}
-              />
+    return (
+      <main className="page bg-white" id="petratings">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12 bg-white">
+              <div className="container">
+                <AddAppointments
+                  formDisplay={this.state.formDisplay}
+                  toggleForm={this.toggleForm}
+                  AddAppointments={this.AddAppointments}
+                />
+                <SearchAppointments
+                  orderBy={this.state.orderBy}
+                  orderDir={this.state.orderDir}
+                  changeOrder={this.changeOrder}
+                  searchApts={this.searchApts}
+                />
+                <ListAppointments
+                  myAppointments={filteredApts}
+                  deleteAppointment={this.deleteAppointment}
+                  updateInfo={this.updateInfo}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </main>
-  );
+      </main>
+    )
+  }
 }
-
-export default App;
