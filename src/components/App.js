@@ -14,7 +14,6 @@ function App() {
       .then(result => {
         const apts = result.map(item => {
           item.aptId = lastIndex
-          console.log()
           setLastIndex(lastIndex = lastIndex + 1)
           return item
         })
