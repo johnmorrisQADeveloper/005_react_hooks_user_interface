@@ -5,15 +5,17 @@ import AddApointments from './AddApointments';
 import SearchAppointments from './SearchAppointments';
 
 function App() {
-  const [myAppointments, setMyAppointments] = useState([])
-  const [lastIndex, setLastIndex] = useState(0)
+  let [myAppointments, setMyAppointments] = useState([])
+  let [lastIndex, setLastIndex] = useState(0)
+
   const fetchData = () => {
     fetch('./data.json')
       .then(response => response.json())
       .then(result => {
         const apts = result.map(item => {
           item.aptId = lastIndex
-          setLastIndex(lastIndex + 1)
+          console.log()
+          setLastIndex(lastIndex = lastIndex + 1)
           return item
         })
         setMyAppointments(apts)
