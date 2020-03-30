@@ -8,6 +8,7 @@ import { without , findIndex} from "lodash"
 function App() {
   let [myAppointments, setMyAppointments] = useState([])
   let [lastIndex, setLastIndex] = useState(0)
+  let [formDisplay, setFormDisplay] = useState(true)
 
   const fetchData = () => {
     fetch('./data.json')
@@ -36,7 +37,7 @@ function App() {
         <div className="row">
           <div className="col-md-12 bg-white">
             <div className="container">
-              <AddApointments />
+              <AddApointments formDisplay={formDisplay}/>
               <SearchAppointments />
               <ListAppointments
                 myAppointments={myAppointments}
