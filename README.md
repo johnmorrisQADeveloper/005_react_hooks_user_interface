@@ -74,6 +74,7 @@ Let’s look at an example where state is an object. We’ll create the same log
 
 To store multiple values in useState, you have to put them into a single object, and be careful about how you update the state.
 ```
+https://daveceddia.com/usestate-hook-examples/
 function LoginForm() {
   const [form, setState] = useState({
     username: '',
