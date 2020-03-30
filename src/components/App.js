@@ -6,18 +6,15 @@ import SearchAppointments from './SearchAppointments';
 import { without } from "lodash"
 
 function App() {
+  const [queryTexts, setQueryTexts] = useState('')
   const [app, setApp] = useState({
     myAppointments: [],
     lastIndex: 0,
     formDisplay: false,
     queryText: '',
-    orderBy: 'ownerName',
+    orderBy: 'petName',
     orderDir: 'asc'
   })
-
-  // let [myAppointments, setMyAppointments] = useState([])
-  // let [lastIndex, setLastIndex] = useState(0)
-  // let [formDisplay, setFormDisplay] = useState(true)
 
   const fetchData = () => {
     fetch('./data.json')
@@ -66,14 +63,15 @@ function App() {
       ...app,
       'myAppointments': fiteredApts
     })
-  }, [app.orderBy, app.orderDir, app.queryText])
-
+    fiteredApts = []
+  }, [app.orderBy, app.orderDir, queryTexts])
 
   const searchApts = (search) => {
     setApp({
       ...app,
       'queryText': search
     })
+    setQueryTexts(app.queryText)
   }
   const changeOrder = (orderBy, orderDir) => {
     console.log(orderBy, orderDir)
@@ -90,22 +88,17 @@ function App() {
       ...app,
       'myAppointments': tempApts
     })
-    // setMyAppointments(tempApts)
   }
   const toggleForm = () => {
     setApp({
       ...app,
       'formDisplay': !app.formDisplay
     })
-    // setFormDisplay(!formDisplay)
   }
   const AddApointment = (apt) => {
     console.log(apt)
     let tempApts = app.myAppointments
     apt.aptId = app.lastIndex
-    // Updating state based on previous state (useState with a number)
-    // https://daveceddia.com/usestate-hook-examples/
-    // setLastIndex(prevState => prevState + 1) // increment 
     setApp({
       ...app,
       'lastIndex': prevState => prevState + 1
@@ -115,9 +108,9 @@ function App() {
       ...app,
       'myAppointments': tempApts
     })
-    // setMyAppointments(tempApts)
   }
   return (
+
     <main className="page bg-white" id="petratings">
       <div className="container">
         <div className="row">
