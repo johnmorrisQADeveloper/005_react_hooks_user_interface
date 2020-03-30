@@ -10,8 +10,8 @@ function App() {
     myAppointments: [],
     lastIndex: 0,
     formDisplay: true,
-    orderBy: 'petName',
-    orderDir: 'desc'
+    orderBy: 'ownerName',
+    orderDir: 'asc'
   })
 
   // let [myAppointments, setMyAppointments] = useState([])
@@ -109,7 +109,10 @@ function App() {
                 toggleForm={toggleForm}
                 AddApointment={AddApointment}
               />
-              <SearchAppointments />
+              <SearchAppointments
+                orderBy={app.orderBy}
+                orderDir={app.orderDir}
+              />
               <ListAppointments
                 myAppointments={app.myAppointments}
                 deleteAppointment={deleteAppointment}
