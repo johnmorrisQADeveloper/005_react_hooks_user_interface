@@ -3,7 +3,7 @@ import ListAppointments from './ListAppointments';
 import AddAppointments from './AddApointments';
 import SearchAppointments from './SearchAppointments';
 import React, { Component } from 'react'
-import { without , findIndex} from "lodash"
+import { without, findIndex } from "lodash"
 
 export default class App extends Component {
   state = {
@@ -34,7 +34,7 @@ export default class App extends Component {
     let aptIndex = findIndex(this.state.myAppointments, {
       aptId: id
     })
-    tempApts[aptIndex][name]=value
+    tempApts[aptIndex][name] = value
     this.setState({
       myAppointments: tempApts
     })
@@ -71,7 +71,6 @@ export default class App extends Component {
     let tempApts = this.state.myAppointments
     apt.aptId = this.state.lastIndex
 
-    // this.state.lastIndex++
     this.setState({
       'lastIndex': this.state.lastIndex + 1
     })

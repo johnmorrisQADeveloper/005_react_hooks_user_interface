@@ -141,7 +141,7 @@ const AddApointments = ({ formDisplay, toggleForm, AddAppointments }) => {
                 name="aptNotes"
                 id="aptNotes"
                 placeholder="Appointment Notes"
-                value={form.aptNotes }
+                value={form.aptNotes}
                 onChange={handleChange}
               />
             </div>

@@ -2,7 +2,7 @@ import React from 'react'
 import { FaTimes } from "react-icons/fa"
 import Moment from "react-moment"
 
-const ListAppointments = ({ myAppointments, deleteAppointment }) => {
+const ListAppointments = ({ myAppointments, deleteAppointment, updateInfo }) => {
   return (
     <div>
       {myAppointments.map(item => {
@@ -19,7 +19,12 @@ const ListAppointments = ({ myAppointments, deleteAppointment }) => {
 
               <div className="pet-info media-body">
                 <div className="pet-head d-flex">
-                  <span className="pet-name">{item.petName}</span>
+                  <span
+                    className="pet-name"
+                    contentEditable suppressContentEditableWarning
+                    onBlur={e => updateInfo('petName', e.target.innerText, item.aptId)}
+                  >{item.petName}
+                  </span>
                   <span className="apt-date ml-auto">
                     <Moment
                       date={item.aptDate}
@@ -32,9 +37,15 @@ const ListAppointments = ({ myAppointments, deleteAppointment }) => {
 
                 <div className="owner-name">
                   <span className="label-item">Owner: </span>
-                  <span>{item.ownerName}</span>
+                  <span
+                    contentEditable suppressContentEditableWarning
+                    onBlur={e => updateInfo('ownerName', e.target.innerText, item.aptId)}
+                  >{item.ownerName}</span>
                 </div>
-                <div className="apt-notes">{item.aptNotes}</div>
+                <div className="apt-notes"
+                  contentEditable suppressContentEditableWarning
+                  onBlur={e => updateInfo('aptNotes', e.target.innerText, item.aptId)}
+                >{item.aptNotes}</div>
               </div>
             </div>
           </div>
