@@ -64,6 +64,14 @@ function App() {
 
   }, [app.orderBy, app.orderDir])
 
+  const changeOrder = (orderBy, orderDir) => {
+    console.log(orderBy, orderDir)
+    setApp({
+      ...app,
+      'orderBy': orderBy,
+      'orderDir': orderDir
+    })
+  }
   const deleteAppointment = (apt) => {
     let tempApts = app.myAppointments
     tempApts = without(tempApts, apt)
@@ -112,6 +120,7 @@ function App() {
               <SearchAppointments
                 orderBy={app.orderBy}
                 orderDir={app.orderDir}
+                changeOrder={changeOrder}
               />
               <ListAppointments
                 myAppointments={app.myAppointments}

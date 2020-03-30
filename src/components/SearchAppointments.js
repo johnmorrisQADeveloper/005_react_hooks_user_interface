@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SearchAppointments = ({ orderBy, orderDir }) => {
+const SearchAppointments = ({ orderBy, orderDir, changeOrder }) => {
   return (
     <div className="search-appointments row justify-content-center my-4">
       <div className="col-md-6">
@@ -25,28 +25,38 @@ const SearchAppointments = ({ orderBy, orderDir }) => {
             <div className="sort-menu dropdown-menu dropdown-menu-right">
               <button
                 className={'sort-by dropdown-item ' + (orderBy === 'petName' ? 'active' : '')}
-                href="#">
+                href="#"
+                onClick={e => changeOrder('petName', orderDir)}
+              >
                 Pet Name
             </button>
               <button
                 className={'sort-by dropdown-item ' + (orderBy === 'aptDate' ? 'active' : '')}
-                href="#">
+                href="#"
+                onClick={e => changeOrder('aptDate', orderDir)}
+                >
                 Date
             </button>
               <button
                 className={'sort-by dropdown-item ' + (orderBy === 'ownerName' ? 'active' : '')}
-                href="#">
+                href="#"
+                onClick={e => changeOrder('ownerName', orderDir)}
+                >
                 Owner
             </button>
               <div role="separator" className="dropdown-divider" />
               <button
                 className={'sort-by dropdown-item ' + (orderDir === 'asc' ? 'active' : '')}
-                href="#">
+                href="#"
+                onClick={e => changeOrder(orderBy, 'asc')}
+                >
                 Asc
             </button>
               <button
                 className={'sort-by dropdown-item ' + (orderDir === 'desc' ? 'active' : '')}
-                href="#">
+                href="#"
+                onClick={e => changeOrder(orderBy, 'desc')}
+                >
                 Desc
             </button>
             </div>
