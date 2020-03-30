@@ -3,6 +3,7 @@ import '../css/App.css';
 import ListAppointments from './ListAppointments';
 import AddApointments from './AddApointments';
 import SearchAppointments from './SearchAppointments';
+import { without , findIndex} from "lodash"
 
 function App() {
   let [myAppointments, setMyAppointments] = useState([])
@@ -23,6 +24,12 @@ function App() {
   useEffect(() => {
     fetchData()
   }, [])
+
+  const deleteAppointment = (apt) => {
+    let tempApts = myAppointments
+    tempApts = without(tempApts, apt)
+    setMyAppointments(tempApts)
+  }
   return (
     <main className="page bg-white" id="petratings">
       <div className="container">
@@ -31,7 +38,10 @@ function App() {
             <div className="container">
               <AddApointments />
               <SearchAppointments />
-              <ListAppointments myAppointments={myAppointments} />
+              <ListAppointments
+                myAppointments={myAppointments}
+                deleteAppointment={deleteAppointment}
+              />
             </div>
           </div>
         </div>

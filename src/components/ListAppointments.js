@@ -2,7 +2,7 @@ import React from 'react'
 import { FaTimes } from "react-icons/fa"
 import Moment from "react-moment"
 
-const ListAppointments = ({ myAppointments }) => {
+const ListAppointments = ({ myAppointments, deleteAppointment }) => {
   return (
     <div>
       {myAppointments.map(item => {
@@ -10,7 +10,9 @@ const ListAppointments = ({ myAppointments }) => {
           <div className="appointment-list item-list mb-3" key={item.aptId}>
             <div className="pet-item col media py-3">
               <div className="mr-3">
-                <button className="pet-delete btn btn-sm btn-danger">
+                <button className="pet-delete btn btn-sm btn-danger"
+                  onClick={() => deleteAppointment(item)}
+                >
                   <FaTimes />
                 </button>
               </div>
