@@ -1,7 +1,46 @@
-import React from 'react'
-import {FaPlus} from "react-icons/fa"
+import React, { useState } from 'react'
+import { FaPlus } from "react-icons/fa"
 
-const AddApointments = ({ formDisplay, toggleForm }) => {
+const AddApointments = ({ formDisplay, toggleForm, AddApointment }) => {
+  // Example: useState with an object (multiple values, sorta)
+  // https://daveceddia.com/usestate-hook-examples/
+  const [form, setState] = useState({
+    petName: '',
+    ownerName: '',
+    aptDate: '',
+    aptTime: '',
+    aptNotes: '',
+  })
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    let tempApt = {
+      petName: form.petName,
+      ownerName: form.ownerName,
+      aptDate: form.aptDate + ' ' + form.aptTime,
+      aptNotes: form.aptNotes
+    }
+    AddApointment(tempApt)
+    setState({
+      petName: '',
+      ownerName: '',
+      aptDate: '',
+      aptTime: '',
+      aptNotes: '',
+    })
+    toggleForm()
+  }
+  const handleChange = (e) => {
+    const target = e.target
+    const value = target.value
+
+    const name = target.name
+    setState({
+      ...form,
+      [name]: value
+    })
+  }
+
   return (
     <div className={
       'card textcenter mt-3 ' +
@@ -15,7 +54,7 @@ const AddApointments = ({ formDisplay, toggleForm }) => {
     </div>
 
       <div className="card-body">
-        <form id="aptForm" noValidate>
+        <form id="aptForm" noValidate onSubmit={handleSubmit}>
           <div className="form-group form-row">
             <label
               className="col-md-2 col-form-label text-md-right"
@@ -30,6 +69,8 @@ const AddApointments = ({ formDisplay, toggleForm }) => {
                 className="form-control"
                 name="petName"
                 placeholder="Pet's Name"
+                value={form.petName}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -47,6 +88,8 @@ const AddApointments = ({ formDisplay, toggleForm }) => {
                 className="form-control"
                 name="ownerName"
                 placeholder="Owner's Name"
+                value={form.ownerName}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -64,6 +107,8 @@ const AddApointments = ({ formDisplay, toggleForm }) => {
                 className="form-control"
                 name="aptDate"
                 id="aptDate"
+                value={form.aptDate}
+                onChange={handleChange}
               />
             </div>
             <label
@@ -78,6 +123,8 @@ const AddApointments = ({ formDisplay, toggleForm }) => {
                 className="form-control"
                 name="aptTime"
                 id="aptTime"
+                value={form.aptTime}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -94,6 +141,8 @@ const AddApointments = ({ formDisplay, toggleForm }) => {
                 name="aptNotes"
                 id="aptNotes"
                 placeholder="Appointment Notes"
+                value={form.aptNotes }
+                onChange={handleChange}
               />
             </div>
           </div>

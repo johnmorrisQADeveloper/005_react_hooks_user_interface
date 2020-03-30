@@ -34,6 +34,16 @@ function App() {
   const toggleForm = () => {
     setFormDisplay(!formDisplay)
   }
+  const AddApointment = (apt) => {
+    console.log(apt)
+    let tempApts = myAppointments
+    apt.aptId = lastIndex
+    // Updating state based on previous state (useState with a number)
+    // https://daveceddia.com/usestate-hook-examples/
+    setLastIndex(prevState => prevState + 1) // increment 
+    tempApts.unshift(apt)
+    setMyAppointments(tempApts)
+  }
   return (
     <main className="page bg-white" id="petratings">
       <div className="container">
@@ -43,6 +53,7 @@ function App() {
               <AddApointments
                 formDisplay={formDisplay}
                 toggleForm={toggleForm}
+                AddApointment={AddApointment}
               />
               <SearchAppointments />
               <ListAppointments
