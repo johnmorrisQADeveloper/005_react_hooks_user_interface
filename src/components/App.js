@@ -9,7 +9,8 @@ function App() {
   const [app, setApp] = useState({
     myAppointments: [],
     lastIndex: 0,
-    formDisplay: true,
+    formDisplay: false,
+    queryText: '',
     orderBy: 'ownerName',
     orderDir: 'asc'
   })
@@ -48,22 +49,32 @@ function App() {
     } else {
       order = -1
     }
-    fiteredApts.sort((a, b) => {
-      if (a[app.orderBy].toLowerCase() <
-        b[app.orderBy].toLowerCase()
-      ) {
+    fiteredApts = fiteredApts.sort((a, b) => {
+      if (a[app.orderBy].toLowerCase() < b[app.orderBy].toLowerCase()) {
         return -1 * order
       } else {
         return 1 * order
       }
+    }).filter(eachItem => {
+      return (
+        eachItem['petName'].toLowerCase().includes(app.queryText.toLowerCase()) ||
+        eachItem['ownerName'].toLowerCase().includes(app.queryText.toLowerCase()) ||
+        eachItem['aptNotes'].toLowerCase().includes(app.queryText.toLowerCase())
+      )
     })
     setApp({
       ...app,
       'myAppointments': fiteredApts
     })
+  }, [app.orderBy, app.orderDir, app.queryText])
 
-  }, [app.orderBy, app.orderDir])
 
+  const searchApts = (search) => {
+    setApp({
+      ...app,
+      'queryText': search
+    })
+  }
   const changeOrder = (orderBy, orderDir) => {
     console.log(orderBy, orderDir)
     setApp({
@@ -121,6 +132,7 @@ function App() {
                 orderBy={app.orderBy}
                 orderDir={app.orderDir}
                 changeOrder={changeOrder}
+                searchApts={searchApts}
               />
               <ListAppointments
                 myAppointments={app.myAppointments}
