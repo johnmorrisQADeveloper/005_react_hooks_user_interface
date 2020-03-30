@@ -3,23 +3,35 @@ import '../css/App.css';
 import ListAppointments from './ListAppointments';
 import AddApointments from './AddApointments';
 import SearchAppointments from './SearchAppointments';
-import { without, findIndex } from "lodash"
+import { without } from "lodash"
 
 function App() {
-  let [myAppointments, setMyAppointments] = useState([])
-  let [lastIndex, setLastIndex] = useState(0)
-  let [formDisplay, setFormDisplay] = useState(true)
+  const [app, setApp] = useState({
+    myAppointments: [],
+    lastIndex: 0,
+    formDisplay: true
+  })
+
+  // let [myAppointments, setMyAppointments] = useState([])
+  // let [lastIndex, setLastIndex] = useState(0)
+  // let [formDisplay, setFormDisplay] = useState(true)
 
   const fetchData = () => {
     fetch('./data.json')
       .then(response => response.json())
       .then(result => {
         const apts = result.map(item => {
-          item.aptId = lastIndex
-          setLastIndex(lastIndex = lastIndex + 1)
+          item.aptId = app.lastIndex
+          setApp({
+            ...app,
+            'lastIndex': app.lastIndex = app.lastIndex + 1
+          })
           return item
         })
-        setMyAppointments(apts)
+        setApp({
+          ...app,
+          'myAppointments': apts
+        })
       })
   }
   useEffect(() => {
@@ -27,22 +39,38 @@ function App() {
   }, [])
 
   const deleteAppointment = (apt) => {
-    let tempApts = myAppointments
+    let tempApts = app.myAppointments
     tempApts = without(tempApts, apt)
-    setMyAppointments(tempApts)
+    setApp({
+      ...app,
+      'myAppointments': tempApts
+    })
+    // setMyAppointments(tempApts)
   }
   const toggleForm = () => {
-    setFormDisplay(!formDisplay)
+    setApp({
+      ...app,
+      'formDisplay': !app.formDisplay
+    })
+    // setFormDisplay(!formDisplay)
   }
   const AddApointment = (apt) => {
     console.log(apt)
-    let tempApts = myAppointments
-    apt.aptId = lastIndex
+    let tempApts = app.myAppointments
+    apt.aptId = app.lastIndex
     // Updating state based on previous state (useState with a number)
     // https://daveceddia.com/usestate-hook-examples/
-    setLastIndex(prevState => prevState + 1) // increment 
+    // setLastIndex(prevState => prevState + 1) // increment 
+    setApp({
+      ...app,
+      'lastIndex': prevState => prevState + 1
+    })
     tempApts.unshift(apt)
-    setMyAppointments(tempApts)
+    setApp({
+      ...app,
+      'myAppointments': tempApts
+    })
+    // setMyAppointments(tempApts)
   }
   return (
     <main className="page bg-white" id="petratings">
@@ -51,13 +79,13 @@ function App() {
           <div className="col-md-12 bg-white">
             <div className="container">
               <AddApointments
-                formDisplay={formDisplay}
+                formDisplay={app.formDisplay}
                 toggleForm={toggleForm}
                 AddApointment={AddApointment}
               />
               <SearchAppointments />
               <ListAppointments
-                myAppointments={myAppointments}
+                myAppointments={app.myAppointments}
                 deleteAppointment={deleteAppointment}
               />
             </div>
