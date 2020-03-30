@@ -9,7 +9,9 @@ function App() {
   const [app, setApp] = useState({
     myAppointments: [],
     lastIndex: 0,
-    formDisplay: true
+    formDisplay: true,
+    orderBy: 'petName',
+    orderDir: 'desc'
   })
 
   // let [myAppointments, setMyAppointments] = useState([])
@@ -37,6 +39,30 @@ function App() {
   useEffect(() => {
     fetchData()
   }, [])
+
+  useEffect(() => {
+    let order
+    let fiteredApts = app.myAppointments
+    if (app.orderDir === 'asc') {
+      order = 1
+    } else {
+      order = -1
+    }
+    fiteredApts.sort((a, b) => {
+      if (a[app.orderBy].toLowerCase() <
+        b[app.orderBy].toLowerCase()
+      ) {
+        return -1 * order
+      } else {
+        return 1 * order
+      }
+    })
+    setApp({
+      ...app,
+      'myAppointments': fiteredApts
+    })
+
+  }, [app.orderBy, app.orderDir])
 
   const deleteAppointment = (apt) => {
     let tempApts = app.myAppointments
